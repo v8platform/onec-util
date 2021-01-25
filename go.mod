@@ -3,9 +3,10 @@ module v8platform/onec-util
 go 1.16
 
 require (
-	github.com/k0kubun/pp v3.0.1+incompatible
-	github.com/mitchellh/go-homedir v1.1.0
-	github.com/spf13/cobra v1.1.1
-	github.com/spf13/viper v1.7.0
-	github.com/v8platform/rac v0.0.0-20210118084330-38993feff388
+	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
+	github.com/kr/pretty v0.1.0 // indirect
+	github.com/urfave/cli/v2 v2.3.0
+	github.com/v8platform/rac v0.1.1
+	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
+
 )
