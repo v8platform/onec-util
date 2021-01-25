@@ -1,0 +1,63 @@
+project_name: onec-util
+
+env:
+  - GO111MODULE=on
+#  - GOPROXY=https://goproxy.io
+before:
+  hooks:
+    - go mod tidy
+#    - docker login
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      #      - 386
+      - amd64
+#      - arm
+#      - arm64
+dist: dist
+
+checksum:
+  name_template: '{{ .ProjectName }}_checksums.txt'
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - Merge pull request
+      - Merge branch
+dockers:
+  - image_templates:
+      - 'ghcr.io/v8platform/{{.ProjectName}}:{{ .Tag }}'
+      - 'ghcr.io/v8platform/{{.ProjectName}}:v{{ .Major }}.{{ .Minor }}'
+      - 'ghcr.io/v8platform/{{.ProjectName}}:latest'
+    dockerfile: Dockerfile
+    ids: [ 'onec-util' ]
+    build_flag_templates:
+      - "--label=org.label-schema.schema-version=1.0"
+      - "--label=org.label-schema.version={{.Version}}"
+      - "--label=org.label-schema.name={{.ProjectName}}"
+      - "--label=com.github.actions.name={{.ProjectName}}"
+      - "--label=com.github.actions.description=Command line utilities for server 1S.Enterprise"
+      - "--label=com.github.actions.icon=terminal"
+      - "--label=com.github.actions.color=blue"
+      - "--label=repository=http://github.com/v8platform/onec-util"
+      - "--label=homepage=http://github.com/v8platform/onec-util"
+      - "--label=maintainer=Aleksey Khorev <khorevaa@gmail.com>"
+archives:
+  - name_template: '{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+    replacements:
+      darwin: Darwin
+      linux: Linux
+      windows: Windows
+      386: i386
+      amd64: x86_64
+    format_overrides:
+      - goos: windows
+        format: zip
